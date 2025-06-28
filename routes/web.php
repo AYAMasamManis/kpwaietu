@@ -5,11 +5,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\DashboardController;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Route;
-=======
-use Illuminate\Support\Facades\Route; // INI HARUS ADA DAN BENAR
->>>>>>> ffef9fec4007e5223aef2f95d5f287d7cfe9bb75
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -31,28 +27,20 @@ Route::get('/', function () {
 // Dashboard pengguna (login & email terverifikasi)
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-<<<<<<< HEAD
 // Forum publik (komentar/testimoni bisa dibaca siapa saja)
 Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 
-=======
-
-// Forum publik (komentar/testimoni bisa dibaca siapa saja)
-Route::get('/forum', [ForumController::class, 'index'])->name('forum');
-
->>>>>>> ffef9fec4007e5223aef2f95d5f287d7cfe9bb75
 // Route untuk user login (auth)
 Route::middleware(['auth'])->group(function () {
     // Halaman edit profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route.delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Kirim komentar forum
     Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
 
     // Hapus komentar forum
-<<<<<<< HEAD
     Route::delete('/forum/{comment}', [ForumController::class, 'destroy'])->withTrashed()->name('forum.destroy');
 
     // Checkout dan simpan pesanan
@@ -61,16 +49,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Halaman keranjang
     Route::get('/keranjang', [OrderController::class, 'create'])->name('keranjang');
-=======
-    Route.delete('/forum/{comment}', [ForumController::class, 'destroy'])->withTrashed()->name('forum.destroy');
-
-    // Checkout dan simpan pesanan
-    Route.get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
-    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-
-    // Halaman keranjang
-    Route.get('/keranjang', [OrderController::class, 'create'])->name('keranjang');
->>>>>>> ffef9fec4007e5223aef2f95d5f287d7cfe9bb75
 
     // Like/Unlike komentar
     Route::post('/forum/{comment}/toggle-like', [ForumController::class, 'toggleLike'])->name('forum.toggleLike');
@@ -79,7 +57,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])->withTrashed()->name('orders.show');
 
     // Mengarsipkan pesanan
-<<<<<<< HEAD
     Route::delete('/orders/{order}/archive', [OrderController::class, 'archive'])->name('orders.archive');
 
     // Mengunggah bukti transfer
@@ -104,37 +81,8 @@ Route::middleware(['auth'])->group(function () {
 
 // Rute untuk halaman Tentang Kami
 Route::get('/about', function () {
-=======
-    Route.delete('/orders/{order}/archive', [OrderController::class, 'archive'])->name('orders.archive');
-
-    // Mengunggah bukti transfer
-    Route.post('/orders/{order}/upload-bukti', [OrderController::class, 'uploadBukti'])->name('orders.uploadBukti');
-});
-
-// Route khusus untuk admin (tanpa middleware isAdmin di route)
-Route.middleware(['auth'])->group(function () {
-    // CRUD Produk
-    Route.resource('/produk', ProdukController::class);
-
-    // Melihat daftar pesanan (admin view)
-    Route.resource('/orders', OrderController::class)->only(['index']);
-
-    // Rute untuk mengubah status pesanan oleh admin
-    Route.patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-
-    // Ekspor histori penjualan
-    Route.get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
-});
-
-// Rute untuk halaman Tentang Kami
-Route.get('/about', function () {
->>>>>>> ffef9fec4007e5223aef2f95d5f287d7cfe9bb75
     return view('about');
 });
 
 // Auth default routes from Laravel Breeze
-<<<<<<< HEAD
 require __DIR__.'/auth.php';
-=======
-require __DIR__.'/auth.php';
->>>>>>> ffef9fec4007e5223aef2f95d5f287d7cfe9bb75
