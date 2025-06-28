@@ -1,53 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waiteu Collagen Drink - @yield('title')</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-</head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Navbar -->
-    <nav class="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-        <div>
-            <a href="{{ url('/') }}" class="text-xl font-bold text-pink-600">Waiteu Collagen Drink</a>
+        <title>{{ config('app.name', 'Waiteu Collagen Drink') }}</title>
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Styles (Ini akan memuat Tailwind CSS dari resources/css/app.css) -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        {{-- Skema Warna Baru: "Brown Nude Agak Pink" yang Cerah dan Kalem --}}
+        <style>
+            body { background-color: #FDF8F5 !important; color: #333333 !important; }
+            header, footer { background-color: #B69797 !important; color: white !important; padding: 1rem; text-align: center; }
+            .cta-button {
+                background: #C7A2A2 !important;
+                color: white !important;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 8px;
+                text-decoration: none;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                transition: background-color 0.3s ease, transform 0.2s ease;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .cta-button:hover {
+                background: #A68A8A !important;
+                transform: translateY(-1px);
+            }
+            .cta-button:active {
+                transform: translateY(0);
+            }
+
+            .bg-blue-600 { background-color: #C7A2A2 !important; }
+            .hover\:bg-blue-700:hover { background-color: #A68A8A !important; }
+            .bg-green-600 { background-color: #8DAB8F !important; }
+            .hover\:bg-green-700:hover { background-color: #79977B !important; }
+            .bg-purple-600 { background-color: #A2A2C7 !important; }
+            .hover\:bg-purple-700:hover { background-color: #8A8AA6 !important; }
+            .bg-red-600 { background-color: #E77C7C !important; }
+            .hover\:bg-red-700:hover { background-color: #CC6B6B !important; }
+            .bg-yellow-500 { background-color: #D2BB73 !important; }
+            .hover\:bg-yellow-600:hover { background-color: #BDA662 !important; }
+            .bg-gray-200 { background-color: #EFEFEF !important; }
+            .hover\:bg-gray-300:hover { background-color: #E0E0E0 !important; }
+
+            /* Menguatkan warna teks global agar lebih terang di atas background */
+            /* Ini menimpa warna teks Tailwind default */
+            .text-gray-900, .text-gray-800, .text-gray-700, .text-gray-600, .text-gray-500, .text-gray-400 {
+                color: #4A4A4A !important; /* Defaultkan ke abu-abu gelap yang lebih terbaca untuk teks umum */
+            }
+
+            /* Khusus untuk teks di header form partials di halaman profil */
+            /* Ini adalah bagian yang paling penting untuk masalah Anda */
+            .p-4.sm\:p-8.bg-white.shadow.sm\:rounded-lg header h2,
+            .p-4.sm\:p-8.bg-white.shadow.sm\:rounded-lg header p {
+                color: white !important; /* Paksa teks menjadi putih */
+            }
+
+            /* Menimpa gaya dark mode Breeze secara eksplisit untuk memastikan tema terang */
+            .dark\:bg-gray-900 { background-color: #FDF8F5 !important; }
+            .dark\:text-gray-100 { color: #4A4A4A !important; }
+            .dark\:bg-gray-800 { background-color: #FFFFFF !important; }
+            .dark\:text-gray-400 { color: #777777 !important; }
+            .dark\:border-gray-700 { border-color: #DDDDDD !important; }
+            .bg-white { background-color: #FFFFFF !important; }
+            .shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); }
+
+            /* Warna untuk teks navigasi */
+            .main-navbar .nav-link { color: #8D6E6E !important; } /* Warna link navigasi yang lebih kalem */
+            .main-navbar .nav-link.active { border-bottom: 2px solid #C7A2A2 !important; color: #C7A2A2 !important; }
+            .main-navbar .nav-link:hover { color: #A68A8A !important; text-decoration: underline; }
+        </style>
+    </head>
+    <body class="font-sans antialiased">
+        <div class="min-h-screen bg-gray-100">
+            @include('layouts.navigation')
+
+            <!-- Page Heading -->
+            @if (isset($header))
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif
+
+            <!-- Page Content -->
+            <main class="py-6 px-4 sm:px-6 lg:px-8">
+                @yield('content')
+            </main>
         </div>
-        <div class="space-x-4 flex items-center">
-            <a href="{{ url('/') }}" class="hover:underline">Home</a>
-            <a href="{{ route('produk.index') }}" class="hover:underline">Produk</a>
-            <a href="{{ url('/forum') }}" class="hover:underline">Forum</a>
-
-            @auth
-                @if(Auth::user()->is_admin)
-                    <a href="{{ route('admin.dashboard') }}" class="hover:underline">Admin Panel</a>
-                @else
-                    <a href="{{ url('/keranjang') }}" class="hover:underline">Keranjang</a>
-                @endif
-                <a href="{{ route('profile.edit') }}" class="hover:underline">Profil</a>
-
-                <form method="POST" action="{{ route('logout') }}" class="inline">
-                    @csrf
-                    <button type="submit" class="hover:underline text-red-600 ml-2">Logout</button>
-                </form>
-            @endauth
-
-            @guest
-                <a href="{{ route('login') }}" class="hover:underline text-blue-600">Login</a>
-                <a href="{{ route('register') }}" class="hover:underline text-green-600">Register</a>
-            @endguest
-        </div>
-    </nav>
-
-    <!-- Konten Utama -->
-    <main class="flex-1 p-6">
-        @yield('content')
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t text-center text-sm py-4 text-gray-500">
-        &copy; {{ date('Y') }} Waiteu Collagen Drink. All rights reserved.
-    </footer>
-
-</body>
+        <footer>
+            <p>&copy; {{ date('Y') }} Waiteu Collagen Drink. All rights reserved.</p>
+        </footer>
+    </body>
 </html>

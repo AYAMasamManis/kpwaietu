@@ -21,7 +21,7 @@
             <div class="space-x-4 text-sm">
                 <a href="{{ route('dashboard') }}" class="hover:underline">Dashboard</a>
                 <a href="{{ route('produk.index') }}" class="hover:underline">Produk</a>
-                <a href="{{ route('forum.index') }}" class="hover:underline">Forum</a>
+                <a href="{{ route('forum') }}" class="hover:underline">Forum</a>
                 <a href="{{ route('profile.edit') }}" class="hover:underline">Profil</a>
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf

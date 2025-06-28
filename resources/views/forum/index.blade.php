@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app') {{-- Pastikan ini konsisten dengan layout utama kamu, yaitu 'layouts.app' --}}
 
 @section('title', 'Forum Diskusi')
 
@@ -26,26 +26,26 @@
 
     {{-- Daftar komentar/testimoni --}}
     <div class="space-y-4 mb-6">
-        @forelse($forums as $forum)
-        <div class="border-b pb-3">
-            <p class="font-semibold text-sm text-gray-700">
-                {{ $forum->user->name ?? 'Anonim' }}
-                <span class="text-gray-400 text-xs ml-2">
-                    {{ $forum->created_at->diffForHumans() }}
-                </span>
-            </p>
-            <p class="text-gray-800 mt-1">{{ $forum->content }}</p>
-        </div>
+        @forelse($comments as $comment) {{-- Menggunakan variabel $comments dari controller --}}
+            {{-- Menyertakan partials/comment.blade.php untuk menampilkan komentar dan balasan --}}
+            @include('partials.comment', ['comment' => $comment, 'level' => 0])
         @empty
-        <p class="text-center text-gray-500">Belum ada komentar.</p>
+            <p class="text-center text-gray-500">Belum ada komentar.</p>
         @endforelse
     </div>
 
     {{-- Form kirim komentar --}}
     @auth
-    <form action="{{ route('forum.comment') }}" method="POST" class="space-y-4">
+    {{-- Perhatikan atribut enctype="multipart/form-data" untuk upload file --}}
+    <form action="{{ route('forum.store') }}" method="POST" class="space-y-4" enctype="multipart/form-data">
         @csrf
-        <textarea name="comment" rows="3" class="w-full border rounded px-4 py-2" placeholder="Tulis komentar..." required>{{ old('comment') }}</textarea>
+        <textarea name="content" rows="3" class="w-full border rounded px-4 py-2" placeholder="Tulis komentar..." required>{{ old('content') }}</textarea>
+        {{-- Input untuk upload gambar --}}
+        <label for="gambar" class="block text-sm font-medium text-gray-700 mt-2">Unggah Gambar:</label>
+        <input type="file" name="gambar" id="gambar" class="w-full border rounded px-4 py-2">
+        @error('gambar') {{-- Menampilkan error validasi gambar --}}
+            <p style="color: red; font-size: 0.9em;">{{ $message }}</p>
+        @enderror
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Kirim Komentar</button>
     </form>
     @else

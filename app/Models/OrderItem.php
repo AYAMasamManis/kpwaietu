@@ -17,8 +17,8 @@ class OrderItem extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function product(): BelongsTo
+    public function produk(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Produk::class, 'product_id'); // Merujuk ke Produk::class
     }
 }
